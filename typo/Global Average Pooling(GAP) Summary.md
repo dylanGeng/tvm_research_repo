@@ -59,6 +59,10 @@ message PoolingParameter {
 
 ## 7. [ROI Pooling](https://blog.csdn.net/lanran2/article/details/60143861)
 > Fast RCNN中对于Pooling层的变种
+1. [Region of interest pooling explained](https://deepsense.ai/region-of-interest-pooling-explained/)
+2. [RoI pooling in TensorFlow](https://github.com/deepsense-ai/roi-pooling)
+3. [Faster-RCNN_TFpy2,roi_pooling_op](https://github.com/KeithYin/Faster-RCNN_TFpy2/blob/master/lib/roi_pooling_layer/roi_pooling_op.cc)
+4. [ROI Pooling层解析](https://blog.csdn.net/lanran2/article/details/60143861)
 
 ## 8. [Spatial Pyramid Pooling](https://www.jianshu.com/p/e36aef9b7a8a)
 > SPP也是一种Pooling层的变种
