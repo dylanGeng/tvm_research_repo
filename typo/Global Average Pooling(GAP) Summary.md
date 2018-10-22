@@ -56,3 +56,10 @@ message PoolingParameter {
 
 > 一般来说，mean-pooling能减小第一种误差，更多的保留图像的背景信息，max-pooling能减小第二种误差，更多的保留纹理信息。
 > Stochastic-pooling则介于两者之间，通过对像素点按照数值大小赋予概率，再按照概率进行亚采样，在平均意义上，与mean-pooling近似，在局部意义上，则服从max-pooling的准则。
+
+## 7. [ROI Pooling](https://blog.csdn.net/lanran2/article/details/60143861)
+> Fast RCNN中对于Pooling层的变种
+
+## 8. [Spatial Pyramid Pooling](https://www.jianshu.com/p/e36aef9b7a8a)
+> SPP也是一种Pooling层的变种
+
