@@ -37,4 +37,36 @@
 
 > 池化层主要用于尺度变换，提取高纬特征。主要分三种池化，
 
+1. 第一种是局部池化，在图像维度上，几个相邻的点被缩减为一个输出点，在Channel维度上不变。包括计算相邻点的平均值(AveragePool)，最大值(MaxPool)，范数(LpPool)。主要用于图像的尺度变换。
+2. 第二种是全局的池化，此时一个Channel的所有数据点缩为1个点，因此有几个Channel就输出几个数据点。此种类型主要用于深度卷积神经网络中卷积部分与FC部分的连接。
+3. 第三种是ROI-pooling，用于Faster-RCNN等检测识别网络中对感兴趣区域进行尺度归一化，从而输入到识别网络进行识别处理。
+
+> 可见，ONNX实现了比较全面的算子覆盖，NNVM实现了比较常见的局部池化和全局池化，但是暂时还没有实现ROI-pool。
+
+![pool operator](https://pic2.zhimg.com/80/v2-9b0cbd098062c45e175af6c897b73c58_hd.jpg)
+
+## 1.3 批数据归一化层
+
+> 归一化层作为一个特殊层，可用于数据的归一化，提高神经网络的性能，降低训练时间。对于带有残差的神经网络非常重要。目前高性能网络大多带有归一化层，而绝大多数都会采用Batch Normalization(BN)。BN前向操作并不复杂，但反向比较复杂，因此用于训练的BN需要加入更多的子层。ONNX构建了两套图描述，用标志位进行区分，用户可以选择是用于训练的还是仅用于前向的。另外，ONNX还提供了在这方面其他的选择，例如Instance归一化(y = scale * (x - mean)/sqrt(variance + epsilon) + B)和基于范数的归一化，LRN被用在AlexNet等早期设计，目前用的比较少。对比之下，NNVM只支持了BN，可以覆盖约95%的应用情形。
+
+![Batch Normalization](https://pic2.zhimg.com/80/v2-f2d63ca7393d9cfdbd34814edc662e07_hd.jpg)
+
+## 1.4 数据归一化
+> 将数据进行归一化处理，通常用于输出层的归一化。
+
+![softmax](https://pic2.zhimg.com/80/v2-cdd6eeedf22ed6a0a4476791b62ce53b_hd.jpg)
+
+## 1.5 其他计算层
+> 在进行训练时，DropOut随机扔掉一些通路，可以用于防止过拟合。这方面两个框架都实现了。Embedding用于将词转换为高纬表达，是文本的预处理的主要步骤。GRUUnit是个试验性函数，功能类似于GRU的激活层。
+
+![others](https://pic1.zhimg.com/80/v2-170ad13f0a24ac5303a207b3f7236d33_hd.jpg)
+
+# 2. 基础Tensor运算
+
+## 2.1 逐元素运算(element-wise)类
+
+> 这个类别包括了Tensor的一些基础运算，由于输出的数据点只跟对应的
+
+
+
 
