@@ -67,3 +67,8 @@ message PoolingParameter {
 ## 8. [Spatial Pyramid Pooling](https://www.jianshu.com/p/e36aef9b7a8a)
 > SPP也是一种Pooling层的变种
 
+## 9.[caffe gpu stochastic pooling](https://github.com/BVLC/caffe/blob/master/src/caffe/layers/pooling_layer.cu)
+> [multinomial distribution,多项式分布](https://en.wikipedia.org/wiki/Multinomial_distribution) and [uniform distribution均匀分布](https://en.wikipedia.org/wiki/Uniform_distribution_(continuous))
+
+> caffe_gpu_rng_uniform
+
