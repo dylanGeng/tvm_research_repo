@@ -100,3 +100,7 @@ conda config --set show_channel_urls yes
 ```
 
 > 执行完上述命令后，会生成`~/.condarc(Linux/Mac)`或`C:\Users\USER_NAME\.condarc`文件，记录着我们对conda的配置，直接手动创建、编辑该文件是相同的效果
+
+
+# Reference
+- [Anaconda使用总结](https://www.jianshu.com/p/2f3be7781451)
