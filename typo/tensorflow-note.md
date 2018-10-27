@@ -28,3 +28,43 @@
 7. **可视化**：使用TensorBoard可视化整个训练过程，极大地降低了TensorFlow的调试过程；
 8. **自动微分**：TensorFlow自动构造反向的计算子图，完成训练参数的梯度计算；
 9. **工作流**：TensorFlow与TensorFlow Serving无缝集成，支持模型的训练、导入、导出、发布一站式的工作流，并自动实现模型的**热更新**和版本管理。
+
+### 2 编程环境
+
+#### 2.1 代码结构
+
+##### 2.1.2 源码结构
+
+> 本书将重点关注core，python组件，部分涉及c，cc, stream_executor组件。
+
+##### 2.1.3 Core
+
+> 内核的源码结构如下所示，主要包括平台，实用函数库，基础框架，Protobuf定义，本地运行时，分布式运行时，图操作，OP定义，以及Kernel实现等组成，这是本
+书重点剖析的组件之一，将重点挖掘基础框架中隐藏的领域模型，追踪整个运行时环境的生命周期和图操作的详细过程，并揭示常见OP的Kernel实现原理和运行机制。
+
+```
+./tensorflow/core
+```
+
+##### 2.1.4 Python
+
+> Python定义和实现了TensorFlow的编程模型，并对外开放API供程序员使用，其源代码如下所示。
+
+```
+./tensorflow/python
+```
+
+##### 2.1.5 Contrib
+
+> contrib是第三方贡献的编程库，它也是TensorFlow标准化之前的实验性编程接口，犹如Boost社区与C++标准之间的关系。当contrib的接口成熟后，便会被TensorFlow标准化，并从contrib中迁移至core，python中，并正式对外发布。
+
+##### 2.1.6 StreamExecutor
+
+> StreamExecutor是Google另一个开源组件库，它提供了主机端(host-side)的编程模型和运行时环境，实现了CUDA和OpenCL的统一封装。使得在主机端的代码中，可以将Kernel函数无缝地部署在CUDA或OpenCL的计算设备上执行。
+
+> 目前，StreamExecutor被大量应用于Google内部GPGPU的应用程序的运行时。其中TensorFlow运行时也包含了一个StreamExecutor的快照版本，用于封装CUDA和OpenCL的运行时。本书将简单介绍CUDA的编程模型和线程模型，并详细介绍StreamExecutor的系统架构与工作原理，揭示Kernel函数的实现模式和习惯用法。
+
+##### 2.1.7 Compiler
+
+> 众所周知，灵活性是TensorFlow最重要的设计目标和核心优势，因此TensorFlow的系统架构具有良好的可扩展性。TensorFlow可用于定义任意图结构，并使用异构的计算设备有效地执行。但是，熊掌与鱼翅不可兼得，当低级OP组合为计算子图时，并期望在GPU上有效
+
