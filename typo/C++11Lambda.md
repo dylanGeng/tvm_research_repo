@@ -98,3 +98,4 @@ std::cout << '\n' << f0 << '\n';
 
 # Reference
 1. [参考文章](https://blogs.oracle.com/pcarlini/entry/c_1x_tidbits_lambda_expressions)
+2. [如何在C++11中使用Lambda表达式](https://www.oracle.com/technetwork/cn/articles/servers-storage-dev/howto-use-lambda-exp-cpp11-2189895-zhs.html)
