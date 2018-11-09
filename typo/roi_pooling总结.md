@@ -99,3 +99,4 @@ max_idx_.Reshape(bottom[1]->num(), channels_, pooled_height_,
 1. [Caffe源码-ROI Pooling层](https://blog.csdn.net/zziahgf/article/details/78330085)
 2. [ROI pooling in TensorFlow](https://github.com/deepsense-ai/roi-pooling)
 3. [详细的Faster R-CNN源码解析之ROI-Pooling逐行代码解析](https://www.imooc.com/article/32920)
+4. [详细的Faster R-CNN源码解析之ROI-Pooling逐行代码解析](https://blog.csdn.net/jiongnima/article/details/80016683)
