@@ -58,6 +58,42 @@ bin_w = roi_w/pooled_w;
 > roi_pool5有一个输出top[0]，其尺寸为(bottom[1]->num(),bottom[0]->channels,pooled_h,pooled_w)，其中，pooled_h和pooled_w是固定定义的，其值这里
 为6.
 
+> 根据其源码roi_pooling_layer.cpp分析
+
+> ROI Pooling层LayerSetUp -- 参数读取
+
+```
+void ROIPoolingLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
+    const vector<Blob<Dtype>*>& top) {
+ROIPoolingParameter roi_pool_param = this->layer_param_.roi_pooling_param();
+CHECK_GT(roi_pool_param.pooled_h(), 0)
+    << "pooled_h must be > 0";
+CHECK_GT(roi_pool_param.pooled_w(), 0)
+    << "pooled_w must be > 0";
+pooled_height_ = roi_pool_param.pooled_h();
+pooled_width_ = roi_pool_param.pooled_w();
+spatial_scale_ = roi_pool_param.spatial_scale();
+LOG(INFO) << "Spatial scale: " << spatial_scale_;
+}
+```
+> ROI Pooling层Reshape
+
+```
+void ROIPoolingLayer<Dtype>::Reshape(const vector<Blob<Dtype>*>& bottom,
+    const vector<Blob<Dtype>*>& top) {
+channels_ = bottom[0]->channels();
+height_ = bottom[0]->height();
+width_ = bottom[0]->width();
+top[0]->Reshape(bottom[1]->num(), channels_, pooled_height_,
+    pooled_width_);
+max_idx_.Reshape(bottom[1]->num(), channels_, pooled_height_,
+    pooled_width_);
+}
+```
+
+> ROI Pooling层的输出Blob-top[0]的channels与bottom[0](即 conv5)相同；top[0]的num与ROI的num相同，将ROI对应在conv5的feature map进行操作。
+
+> ROI Pooling层Forward_cpu实现
 
 ## Reference
 1. [Caffe源码-ROI Pooling层](https://blog.csdn.net/zziahgf/article/details/78330085)
