@@ -22,4 +22,4 @@
 > 马斯洛也认为，一旦人们满足了基本的生存需求和安全需求，那么增加自尊与自我实现(正面动机)的行动，就会比本着底层次动机，比如自我防卫、好胜与贪财(负面动机)的行动，带给人更多的成就感和满足感。
 > 如果我们的行为是受高层次动机驱使，那么我们自身的潜能将会被源源不断地激发出来，而且个人能力也会迅速增强。
 
-![img]()
+![img](https://www.google.com/search?q=%E9%A9%AC%E6%96%AF%E6%B4%9B%E5%8A%A8%E6%9C%BA%E9%87%8F%E8%A1%A8%E5%9B%BE&rlz=1C1GCEU_zh-CNMY819MY819&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiKgZr67c7eAhVFA4gKHVX5AWIQ_AUIDigB&biw=1920&bih=969#imgrc=7vBk3jd31QJpWM:)
