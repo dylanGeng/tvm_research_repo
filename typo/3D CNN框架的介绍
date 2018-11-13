@@ -1,0 +1,27 @@
+# [3D CNN框架结构各层详细计算过程](https://blog.csdn.net/u014154380/article/details/78395010)
+
+## 2D CNN和3D CNN的区别
+> 2D CNN利用2D CNN对视频进行操作，一般是对视频的每一帧图像分别利用CNN来进行识别，这种方式的识别不会考虑时间维度的帧间运动信息。
+
+## 3D CNN
+> 使用3D CNN能更好的捕获视频中的时间和空间的特征信息，以下是3D CNN对图像序列采用3D卷积核进行卷积操作:
+![img](https://img-blog.csdn.net/20171030161324048?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxNDE1NDM4MA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+> 上面进行卷积操作的时间维度为3，即对连续的三帧图像进行卷积操作，上面的3D卷积是通过堆叠多个连续的帧组成一个立方体，然后在立方体中运用3D卷积核。
+在这个结构中，卷积层中每一个特征map都会与上一层中多个邻近的连续帧相连,因此捕捉运动信息。例如上面左图，一个卷积map的某一个位置的值是通过卷积上一层的三个
+连续的帧的同一个位置的局部感受野得到的。
+
+> 需要注意的是：3D卷积核只能从cube中提取一种类型的特征，因为在整个cubu中卷积核的权值都是一样的，也就是共享权值，都是同一个卷积核。我们可以采用多种
+卷积核，以提取多种特征。
+
+## 2D与3D卷积操作
+![img](https://img-blog.csdn.net/20171030162612974?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxNDE1NDM4MA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+> (a)和(b)分别为2D卷积用于单通道图像和多通道图像的情况(此处多通道图像可以指同一张图片的3个颜色通道，也指多张堆叠在一起的图片，即一小段视频)，对于一个滤波器，
+输出为一张二维的特征图，多通道的信息被完全压缩了。
+> (c)中的3D卷积的输出仍然为3D的特征图。
+
+> 现在考虑一个视频段输入，其大小为c*l*h*w，其中c为图像通道(一般为3)，l为视频序列的长度，h和w分别为视频的宽与高。进行一次kernel size为3*3*3，stride为1， 
+padding=True，滤波器个数为K的3D卷积后，输出的大小为K*l*h*w
+
+[3D 池化C3D facebook](https://github.com/facebook/C3D)
