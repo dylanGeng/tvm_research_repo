@@ -25,6 +25,7 @@
 > [git push](https://www.cnblogs.com/qianqiannian/p/6008140.html) 命令用于将本地分支的更新，推送到远程主机。它的格式与`git pull`命令相似。
 ```shell
 git push <远程主机名> <本地分支名>:<远程分支名>
+git.exe push --progress "origin" develop:develop
 ```
 
 ## 5. [git分支切换](https://blog.csdn.net/u014540717/article/details/54314126)
@@ -89,6 +90,9 @@ git merge tmp #再进行比较合并
 > git pull origin master `命令相当于`git fetch`和`git merge`
 >
 > 在实际使用中，git fetch更安全一些。因为在merge前，我们可以查看更新情况，然后再决定是否合并。
+```shell
+git.exe pull --progress -v --no-rebase "origin"
+```
 
 ## 7. [git 远程仓库的使用](https://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8)
 > 要参与任何一个 Git 项目的协作，必须要了解该如何管理远程仓库。远程仓库是指托管在网络上的项目仓库，可能会有好多个，其中有些你只能读，另外有些可以写。同他人协作开发某个项目时，需要管理这些远程仓库，以便推送或拉取数据，分享各自的工作进展。 管理远程仓库的工作，包括添加远程库，移除废弃的远程库，管理各式远程库分支，定义是否跟踪这些分支，等等。本节我们将详细讨论远程库的管理和使用。
