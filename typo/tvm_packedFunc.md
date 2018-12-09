@@ -1,0 +1,2 @@
+- [深度学习编译中间件之NNVM(四)TVM设计理念与开发者指南](https://blog.csdn.net/sanallen/article/details/79397129)
+- [packed_func.h](https://github.com/dmlc/tvm/blob/master/include/tvm/runtime/packed_func.h)
