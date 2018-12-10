@@ -27,10 +27,63 @@ enum Token {
 static std::string IdentifierStr; //Filled in if tok_identifier
 static double NumVal;	//Filled in if tok_number
 
+/// gettok - Return the next token from standard input.
+static int gettok() {
+	static int LastChar = ' ';
+
+	// Skip any whitespace.
+	while(isspace(LastChar))
+		LastChar = getchar();
+
+	if(isalpha(LastChar)) {	// identifier: [a-zA-Z][a-zA-Z0-9]*
+		IdentifierStr = LastChar;
+		
+		while(isalnum(LastChar = getChar())){
+			IdentifierStr += LastChar;
+		}
+
+		if(IdentifierStr == "def")
+			return tok_def;
+		if(IdentifierStr == "extern")
+			return tok_extern;
+		return tok_identifier;
+	}
+
+	if(isdigit(LastChar) || LastChar == '.'){ // Number: [0-9.]+
+		std::string NumStr;
+		do {
+			NumStr += LastChar;
+			LastChar = getChar();
+		} while (isdigit(LastChar) || LastChar == '.');
+
+		NumVal = strtod(NumStr.c_str(), nullptr);
+		return tok_number;
+	}
+
+	if(LastChar == '#') {
+		// Comment until end of line.
+		do
+			LastChar = getChar();
+		while(LastChar != EOF && LastChar != '\n' && LastChar != '\r');
+
+		if(LastChar != EOF)
+			return gettok();
+	}
+
+	// Check for end of file. Don't eat the EOF
+	if(LastChar != EOF)
+		return tok_eof;
+
+	// Otherwise, just return the character as its ascii value.
+	int ThisChar = LastChar;
+	LastChar = getChar();
+	return ThisChar;
+}
+
 //===----------------------------------------===//
 //	Abstract Syntax Tree (aka Parse Tree)
 //===----------------------------------------===//
-
+namespace {
 /// ExprAST - Base class for all expression nodes
 class ExprAST {
 public:
@@ -91,12 +144,17 @@ class FunctionAST {
 public:
 	FunctionAST(std::unique_ptr<PrototypeAST> proto, std::unique_ptr<ExprAST> body)
 	 : Proto(std::move(proto)), Body(std::move(body)) {}
-};
+}; 
+} // end anonymous namespace
 
 auto LHS = llvm::make_unique<VariableExprAST>("x");
 auto RHS = llvm::make_unique<VariableExprAST>("y");
 auto Result = std::make_unique<BinaryExprAST>('+', std::move(LHS),
  std::move(RHS));
+
+//===--------------------------------------------------------------------------------===//
+// Parser
+//===--------------------------------------------------------------------------------===//
 
 /// CurTok/getNextToken - Provide a simple token buffer. CurTok is the current
 /// token the parset is looking at. getNextToken reads another token from the 
@@ -105,6 +163,23 @@ static int CurTok;
 static int getNextToken() {
 	return CurTok = gettok();
 }
+
+/// BinopPrecedence - This holds the precedence for each binary operator that is 
+/// defined.
+static std::map<char, int> BinopPrecedence;
+
+/// GetTokPrecedence - Get the precedence of the pending binary operator token.
+static int GetTokPrecedence() {
+	if (!isascii(CurTok))
+		return -1;
+	
+	// Make sure it's a declared binop
+	int TokPrec = BinopPrecedence[CurTok];
+	if (TokPrec <= 0)
+		return -1;
+	return TokPrec;
+}
+
 
 /// LogError* - These are little helper functions for error handling.
 std::unique_ptr<ExprAST> LogError(const  char *Str) {
@@ -135,6 +210,42 @@ static std::unique_ptr<ExprAST> ParseParenExpr() {
 	return V;
 }
 
+/// identifierexpr
+///   ::= identifier
+///   ::= identifier '(' expression ')'
+static std::unique_ptr<ExprAST> ParseIdentifierExpr() {
+	std::string IdName = IdentifierStr;
+
+	getNextToken(); //eat identifier.
+
+	if (CurTok != '(') //Simple variable ref.
+		return llvm::make_unique<VariableExprAST>(IdName);
+	
+	// Call.
+	getNextToken();	//eat (
+	std::vector<std::unique_ptr<ExprAST> > Args;
+	if (CurTok != ')') {
+		while (1) {
+			if (auto Arg = ParseExpression())
+				Args.push_back(std::move(Arg));
+			else
+				return nullptr;
+
+			if (CurTok == ')')
+				break;
+			
+			if (CurTok != ',')
+				return LogError("Expected ')' or ',' in argument list");
+			getNextToken();
+		}
+	}
+
+	// Eat the ')'.
+	getNextToken();
+
+	return llvm::make_unique<CallExprAST>(IdName, std::move(Args));
+}
+
 /// primary
 ///		::= identifierexpr
 ///		::= numberexpr
@@ -143,6 +254,11 @@ static std::unique_ptr<ExprAST> ParsePrimary() {
 	switch (CurTok) {
 	default:
 		return LogError("unknown token when expecting an expression");
-	case tok_
+	case tok_identifier:
+		return ParseIdentifierExpr();
+	case tok_number:
+		return ParseNumberExpr();
+	case '(':
+		return ParseParenExpr();
 	}
 }
