@@ -18,3 +18,19 @@
 ```
 
 > 使用-O2优化选项，在用gdb调试的过程中，经常会出现value optimized out，经常出现在循环语句中，对于希望进行单步跟踪调试时，应使用-O0选项。
+
+# [gdb 调试 shared_ptr](https://stackoverflow.com/questions/24917556/how-to-access-target-of-stdtr1shared-ptr-in-gdb)
+> Try with
+
+```
+(gdb) p (*sharedPtr.get())
+```
+
+```
+for (IterVar iv : orig_stage->leaf_iter_vars)
+
+(gdb) p (*iv.get())
+(gdb) p (*(iv->var).get())
+```
+
+> [其他的几种方法1](https://blog.csdn.net/cao19881125/article/details/43341165), [方法2](http://www.cplusplus.com/forum/beginner/218643/)
